@@ -159,6 +159,11 @@ function user_messages()
                         'receiver_id' => $request->input('to'),
                         'text'        => $request->input('text')
                     ]);
+                    // MOD(nils): send email to recipient
+                    if (!mail_user_pm($receiver, $user, $request->input('text'))) {
+                        error_log(''.$user->name.' has no email address registered.', 0);
+                    };
+                    // END MOD(nils)
                     throw_redirect(page_link_to('user_messages'));
                 } else {
                     return error(__('Transmitting was terminated with an Error.'), true);
